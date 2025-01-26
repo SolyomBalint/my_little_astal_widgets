@@ -1,9 +1,13 @@
 local App = require("astal.gtk3.app")
-local Bar = require("widgets.bar")
+-- Bar requires
+local interactive_bar = require("widgets.interactive_bar")
 
-App:start {
+App:start({
+    instance_name = "desktop_widgets",
     main = function()
-        Bar(0)
-        Bar(1) -- instantiate for each monitor
+        for _, monitor in pairs(App.monitors) do
+            -- Call every window init here
+            interactive_bar.init(monitor)
+        end
     end,
-}
+})

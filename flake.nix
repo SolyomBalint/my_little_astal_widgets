@@ -7,17 +7,25 @@
     };
   };
 
-  outputs = { self, nixpkgs, astal }: let
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
-  in {
-    packages.${system}.default = astal.lib.mkLuaPackage {
-      inherit pkgs;
-      name = "Start-astal-widgets";
-      src = ./.;
+  outputs =
+    {
+      self,
+      nixpkgs,
+      astal,
+    }:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+    in
+    {
+      packages.${system}.default = astal.lib.mkLuaPackage {
+        inherit pkgs;
+        name = "Start-astal-widgets";
+        src = ./.;
 
-      extraPackages = [
-      ];
+        extraPackages = [
+          astal.packages.${system}.battery
+        ];
+      };
     };
-  };
 }
